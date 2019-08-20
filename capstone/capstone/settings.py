@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'capstone.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'capstone',
+        'NAME': 'design',
         'PASSWORD': 'dlwlfkf85',
         'USER': 'naram',
         'PORT': 5432

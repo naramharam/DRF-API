@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
-from data.models import facilty, other, community, professional, jaega
+from data.models import facilty, other, community, professional, jaega, all, UserModel
 from data.serializers import FaciltySerializer, OtherSerializer, CommunitySerializer,\
-    ProfessionalSerializer, JaeGaSerializer
+    ProfessionalSerializer, JaeGaSerializer, AllSerializer, UserSerializer
 from django.contrib.auth.models import User
-from data.serializers import UserSerializer
+# from data.serializers import UserSerializer
 from rest_framework import permissions
 from data.permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import api_view
@@ -25,26 +25,26 @@ from django.contrib.auth.hashers import make_password
     #     serializer.save(password=password)
 #
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        # 'users': reverse('user-list', request=request, format=format),
+        'user': reverse('user-list', request=request, format=format),
         'facilty': reverse('facilty-list', request=request, format=format),
         'jaega': reverse('jaega-list', request=request, format=format),
         'other': reverse('other-list', request=request, format=format),
         'community': reverse('community-list', request=request, format=format),
-        'professional': reverse('professional-list', request=request, format=format)
+        'professional': reverse('professional-list', request=request, format=format),
+        # 'accounts': reverse('accounts-list', request=request, format=format)
      })
 
 
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = UserModel.objects.all()
+    serializer_class = UserSerializer
+
+
 class FaciltyViewSet(viewsets.ModelViewSet):
-    # 이 뷰셋은 'list'와 'create', 'retrieve', 'update', 'destory' 기능을 자동으로 지원한다.
-    # 여기에 'highlight' 기능의 코드만 추가로 작성했다.
     queryset = facilty.objects.all()
     serializer_class = FaciltySerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -60,8 +60,6 @@ class FaciltyViewSet(viewsets.ModelViewSet):
 
 
 class OtherViewSet(viewsets.ModelViewSet):
-    # 이 뷰셋은 'list'와 'create', 'retrieve', 'update', 'destory' 기능을 자동으로 지원한다.
-    # 여기에 'highlight' 기능의 코드만 추가로 작성했다.
     queryset = other.objects.all()
     serializer_class = OtherSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -77,8 +75,6 @@ class OtherViewSet(viewsets.ModelViewSet):
 
 
 class JaeGaViewSet(viewsets.ModelViewSet):
-    # 이 뷰셋은 'list'와 'create', 'retrieve', 'update', 'destory' 기능을 자동으로 지원한다.
-    # 여기에 'highlight' 기능의 코드만 추가로 작성했다.
     queryset = jaega.objects.all()
     serializer_class = JaeGaSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -94,8 +90,6 @@ class JaeGaViewSet(viewsets.ModelViewSet):
 
 
 class CommunityViewSet(viewsets.ModelViewSet):
-    # 이 뷰셋은 'list'와 'create', 'retrieve', 'update', 'destory' 기능을 자동으로 지원한다.
-    # 여기에 'highlight' 기능의 코드만 추가로 작성했다.
     queryset = community.objects.all()
     serializer_class = CommunitySerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -111,8 +105,6 @@ class CommunityViewSet(viewsets.ModelViewSet):
 
 
 class ProfessionalViewSet(viewsets.ModelViewSet):
-    # 이 뷰셋은 'list'와 'create', 'retrieve', 'update', 'destory' 기능을 자동으로 지원한다.
-    # 여기에 'highlight' 기능의 코드만 추가로 작성했다.
     queryset = professional.objects.all()
     serializer_class = ProfessionalSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -126,3 +118,17 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+
+class AllViewSet(viewsets.ModelViewSet):
+    queryset = all.objects.all()
+    serializer_class = AllSerializer
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    #                       IsOwnerOrReadOnly]
+
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        all = self.get_object()
+        return Response(all.highlighted)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

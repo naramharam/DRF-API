@@ -2,8 +2,15 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from data.models import facilty, other, community, jaega, professional
+from data.models import facilty, other, community, jaega, professional, all, UserModel
 from django.contrib.auth.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserModel
+        fields = '__all__'
 
 
 class FaciltySerializer(serializers.HyperlinkedModelSerializer):
@@ -50,6 +57,15 @@ class ProfessionalSerializer(serializers.HyperlinkedModelSerializer):
         model = professional
         fields = ['url', 'id', 'highlight', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
 
+
+class AllSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    highlight = serializers.HyperlinkedIdentityField(view_name='all-highlight', format='html')
+
+    class Meta:
+        model = all
+        fields = ['url', 'id', 'highlight', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
+
 #
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     facilty = serializers.HyperlinkedRelatedField(many=True, view_name='data-detail', read_only=True)
@@ -63,7 +79,14 @@ class ProfessionalSerializer(serializers.HyperlinkedModelSerializer):
 #         fields = ['url', 'id', 'username', 'facilty', 'jaega', 'other', 'community', 'professional']
 
 
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ['pk', 'username', 'email']
+
+
+
+
+        # 이름
+        # 아이디
+        # 성별
+        # 지역
+        # 시구군
+        # 비밀번호
+        # 선호봉사종류

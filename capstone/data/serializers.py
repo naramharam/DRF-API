@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from data.models import facilty, other, community, jaega, professional, all, UserModel
+from data.models import Facility, Other, community, Jaega, professional, all, UserModel
 from django.contrib.auth.models import User
 
 
@@ -18,7 +18,7 @@ class FaciltySerializer(serializers.HyperlinkedModelSerializer):
     highlight = serializers.HyperlinkedIdentityField(view_name='facilty-highlight', format='html')
 
     class Meta:
-        model = facilty
+        model = Facility
         fields = ['url', 'id', 'highlight', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
 
 
@@ -27,7 +27,7 @@ class OtherSerializer(serializers.HyperlinkedModelSerializer):
     highlight = serializers.HyperlinkedIdentityField(view_name='other-highlight', format='html')
 
     class Meta:
-        model = other
+        model = Other
         fields = ['url', 'id', 'highlight', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
 
 
@@ -45,7 +45,7 @@ class JaeGaSerializer(serializers.HyperlinkedModelSerializer):
     highlight = serializers.HyperlinkedIdentityField(view_name='jaega-highlight', format='html')
 
     class Meta:
-        model = jaega
+        model = Jaega
         fields = ['url', 'id', 'highlight', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
 
 

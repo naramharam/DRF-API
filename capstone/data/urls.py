@@ -4,10 +4,10 @@ from rest_framework.routers import DefaultRouter
 from data import views
 
 # 라우터를 생성하고 뷰셋을 등록한다.
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=True)
 router.register(r'all', views.AllViewSet)
 router.register(r'other', views.OtherViewSet)
-router.register(r'facilty', views.FaciltyViewSet)
+router.register(r'facility', views.FacilityViewSet)
 router.register(r'community', views.CommunityViewSet)
 router.register(r'professional', views.ProfessionalViewSet)
 router.register(r'jaega', views.JaeGaViewSet)

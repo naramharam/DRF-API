@@ -32,16 +32,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>admin</find>
-      <find>₩₩</find>
-    </findStrings>
-  </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="2560" />
-    <option name="height" value="1440" />
-  </component>
   <component name="ProjectId" id="1OzbAzTZEFV1Ed57PfuTVMq4B7b" />
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="postgresql" />
@@ -116,7 +106,8 @@
       <workItem from="1564137022382" duration="3178000" />
       <workItem from="1564303754575" duration="19371000" />
       <workItem from="1564983238557" duration="872000" />
-      <workItem from="1566282765112" duration="6516000" />
+      <workItem from="1566282765112" duration="8735000" />
+      <workItem from="1567078487589" duration="8564000" />
     </task>
     <servers />
   </component>

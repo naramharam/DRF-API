@@ -7,7 +7,7 @@ from pygments import highlight
 from django.contrib.auth.models import AbstractUser
 
 
-class other(models.Model):
+class Other(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
@@ -19,7 +19,7 @@ class other(models.Model):
         return self.title
 
 
-class jaega(models.Model):
+class Jaega(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
@@ -55,7 +55,7 @@ class community(models.Model):
         return self.title
 
 
-class facilty(models.Model):
+class Facility(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
@@ -81,7 +81,7 @@ class all(models.Model):
 
 class UserModel(models.Model):
     name = models.CharField(max_length=10)
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=100)
     user_id = models.EmailField()
     gender = models.CharField(max_length=10)
     location = models.CharField(max_length=10)

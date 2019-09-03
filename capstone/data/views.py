@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 
-from data.models import Facility, Other, community, professional, Jaega, all, UserModel
-from data.serializers import FaciltySerializer, OtherSerializer, CommunitySerializer,\
+from data.models import Facility, Other, Community, Professional, Jaega, All, UserModel
+from data.serializers import FacilitySerializer, OtherSerializer, CommunitySerializer,\
     ProfessionalSerializer, JaeGaSerializer, AllSerializer, UserSerializer
 from django.contrib.auth.models import User
 # from data.serializers import UserSerializer
@@ -17,52 +17,26 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 
 
-# class UserViewSet(viewsets.ReadOnlyModelViewSet):
-#     # 이 뷰셋은 'list'와 'detail' 기능을 자동으로 지원한다.
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-    # def perform_create(self, serializer):
-    #     password = make_password(self.request.data['password'])
-    #     serializer.save(password=password)
-#
-
-
 @api_view(['GET', 'POST'])
 def api_root(request, format=None):
     print(request)
     if request.method == 'GET':
         return Response({
-            'accounts': reverse('accounts-list', request=request, format=format),
+            'account': reverse('account-list', request=request, format=format),
             'facility': reverse('facility-list', request=request, format=format),
             'jaega': reverse('jaega-list', request=request, format=format),
             'other': reverse('other-list', request=request, format=format),
             'community': reverse('community-list', request=request, format=format),
             'professional': reverse('professional-list', request=request, format=format),
-            # 'accounts': reverse('accounts-list', request=request, format=format)
+            'login': reverse('login-list', request=request, format=format)
          })
     elif request.method == 'POST':
         pass
 
 
-# class UserViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = UserModel.objects.all()
-#     serializer_class = UserSerializer
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = UserModel.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user_id']
-
-    def create(self, request, *args, **kwargs):
-        print(request.data)
-        return super().create(request, args, kwargs)
-
-
 class FacilityViewSet(viewsets.ModelViewSet):
     queryset = Facility.objects.all()
-    serializer_class = FaciltySerializer
+    serializer_class = FacilitySerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     #                       IsOwnerOrReadOnly]
 
@@ -82,22 +56,48 @@ class JaeGaViewSet(viewsets.ModelViewSet):
 
 
 class CommunityViewSet(viewsets.ModelViewSet):
-    queryset = community.objects.all()
+    queryset = Community.objects.all()
     serializer_class = CommunitySerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     #                       IsOwnerOrReadOnly]
 
 
 class ProfessionalViewSet(viewsets.ModelViewSet):
-    queryset = professional.objects.all()
+    queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     #                       IsOwnerOrReadOnly]
 
 
 class AllViewSet(viewsets.ModelViewSet):
-    queryset = all.objects.all()
+    queryset = All.objects.all()
     serializer_class = AllSerializer
+
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['title']
+    #
+    # def create(self, request, *args, **kwargs):
+    #     print(request.data)
+    #     return super().create(request, args, kwargs)
+
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     #                       IsOwnerOrReadOnly]
+
+
+# class LoginViewSet(viewsets.ModelViewSet):
+#     queryset = LoginUserModel.objects.all()
+#     serializer_class = LoginSerializer
+#
+#     # return Response(UserViewSet)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = UserModel.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user_id']
+
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        return super().create(request, args, kwargs)
 

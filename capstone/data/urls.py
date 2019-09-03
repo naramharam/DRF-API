@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 from data import views
 
 # 라우터를 생성하고 뷰셋을 등록한다.
+from data.views import UserViewSet
+
 router = DefaultRouter(trailing_slash=True)
 router.register(r'all', views.AllViewSet)
 router.register(r'other', views.OtherViewSet)
@@ -11,7 +13,9 @@ router.register(r'facility', views.FacilityViewSet)
 router.register(r'community', views.CommunityViewSet)
 router.register(r'professional', views.ProfessionalViewSet)
 router.register(r'jaega', views.JaeGaViewSet)
-router.register(r'accounts', views.UserViewSet)
+router.register(r'account', views.UserViewSet)
+# router.register(r'login', views.LoginViewSet)
+
 
 # API URL을 라우터가 자동으로 인식한다.
 urlpatterns = [

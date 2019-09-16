@@ -1,20 +1,13 @@
-from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-
 from data.models import Facility, Other, Community, Professional, Jaega, All, UserModel
 from data.serializers import FacilitySerializer, OtherSerializer, CommunitySerializer,\
     ProfessionalSerializer, JaeGaSerializer, AllSerializer, UserSerializer
-from django.contrib.auth.models import User
-# from data.serializers import UserSerializer
-from rest_framework import permissions, status
-from data.permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
-from rest_framework import renderers
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.contrib.auth.hashers import make_password
+from . import Recommend
+from . import KeyWordSearch
 
 
 @api_view(['GET', 'POST'])
@@ -73,8 +66,8 @@ class AllViewSet(viewsets.ModelViewSet):
     queryset = All.objects.all()
     serializer_class = AllSerializer
 
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['title']
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title']
     #
     # def create(self, request, *args, **kwargs):
     #     print(request.data)
@@ -84,20 +77,56 @@ class AllViewSet(viewsets.ModelViewSet):
     #                       IsOwnerOrReadOnly]
 
 
-# class LoginViewSet(viewsets.ModelViewSet):
-#     queryset = LoginUserModel.objects.all()
-#     serializer_class = LoginSerializer
+class SearchViewSet(viewsets.ModelViewSet):
+
+    serializer_class = AllSerializer
+
+    def get_queryset(self):
+        queryset = All.objects.all()
+        title = self.request.query_params.get('title', None)
+
+        qs1 = KeyWordSearch.keyword_search(title)[0]
+        qs2 = KeyWordSearch.keyword_search(title)[1]
+
+        if qs1 or qs2 or title is not None:
+            queryset1 = queryset.filter(title__contains=qs1)
+            queryset2 = queryset.filter(title__contains=qs2)
+            queryset3 = queryset.filter(title__contains=title)
+
+            queryset = queryset1 | queryset2 | queryset3
+
+            return queryset
+
+
+# class RecommendViewSet(viewsets.ModelViewSet):
 #
-#     # return Response(UserViewSet)
+#     serializer_class = AllSerializer
+#
+#     def get_queryset(self):
+#         queryset = All.objects.all()
+#         location = self.request.query_params.get('location', None)
+#         gender = self.request.query_params.get('gender', None)
+#
+#         qs1 = KeyWordSearch.keyword_search(location)
+#         qs2 = KeyWordSearch.keyword_search(gender)
+#
+#         if qs1 or qs2 or title is not None:
+#             queryset1 = queryset.filter(title__contains=qs1)
+#             queryset2 = queryset.filter(title__contains=qs2)
+#             queryset3 = queryset.filter(title__contains=title)
+#
+#             queryset = queryset1 | queryset2 | queryset3
+#
+#             return queryset
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
+
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user_id']
 
     def create(self, request, *args, **kwargs):
         print(request.data)
         return super().create(request, args, kwargs)
-

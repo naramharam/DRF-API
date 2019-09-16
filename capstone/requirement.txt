@@ -1,0 +1,8 @@
+Django==2.2.5
+django-cors-headers==3.1.0
+django-filter==2.2.0
+djangorestframework==3.10.3
+gensim==3.8.0
+numpy==1.17.2
+psycopg2==2.8.3
+pandas==0.25.1

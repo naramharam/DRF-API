@@ -3,7 +3,7 @@ import itertools
 
 
 def keyword_search(keyword):
-    model = Word2Vec.load('keywordSearchModel.model')
+    model = Word2Vec.load('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/keywordSearchModel.model')
     result_array = model.wv.most_similar(keyword)
     result_array = list(itertools.chain.from_iterable(result_array))
     del result_array[1:20:2]

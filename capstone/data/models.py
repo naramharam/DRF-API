@@ -6,7 +6,7 @@ class Other(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 
@@ -18,7 +18,7 @@ class Jaega(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 
@@ -30,7 +30,7 @@ class Professional(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 
@@ -42,7 +42,7 @@ class Community(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 
@@ -54,7 +54,7 @@ class Facility(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 
@@ -66,7 +66,7 @@ class All(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    contents = models.TextField()
+    contents = models.CharField(max_length=5000)
     location = models.CharField(max_length=50)
     sub_location = models.CharField(max_length=50)
 

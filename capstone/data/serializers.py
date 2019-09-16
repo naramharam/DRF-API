@@ -61,6 +61,7 @@ class AllSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'owner', 'title', 'location', 'sub_location', 'gender', 'contents']
 
 
+
 # class LoginSerializer(serializers.ModelSerializer):
 #
 #     class Meta:

@@ -1,13 +1,19 @@
 import pandas as pd
 import numpy as np
 import random
+import pickle
 
 pd.set_option('display.max_rows', 5000)  ##생략된 행 전부 출력
 
 
 def recommend_volunteer(input_local, input_gender):
-  sido = pd.read_csv('resource/시도별.csv')
-  gender = pd.read_csv('resource/연령대별_성별.csv')
+  # sido = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/sido.csv')
+  # gender = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/age_gender.csv')
+  # sido.to_pickle("sido.pkl")
+  # gender.to_pickle("gender.pkl")
+  sido = pd.read_pickle("/Users/jo-eun-yeob/Workspace/TIL/capstone/data/sido.pkl")
+  gender = pd.read_pickle("/Users/jo-eun-yeob/Workspace/TIL/capstone/data/gender.pkl")
+
   man = []
   girl = []
   common = []
@@ -33,15 +39,18 @@ def recommend_volunteer(input_local, input_gender):
     common_choice = []
 
   ## 시설, 재가, 전문, 지역, 기타 봉사활동을 csv파일로 읽어와서 소분류와 내용을 제외하고 지역 컬럼 기준으로 정렬
-  siseol = pd.read_csv('resource/시설봉사.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
-  jaega = pd.read_csv('resource/재가봉사.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
-  jeonmun = pd.read_csv('resource/전문봉사.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
-  jiyeok = pd.read_csv('resource/지역사회봉사.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
-  gita = pd.read_csv('resource/기타봉사.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
+  # siseol = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/facility.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
+  # jaega = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/jaega.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
+  # jeonmun = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/professional.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
+  # jiyeok = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/community.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
+  # gita = pd.read_csv('/Users/jo-eun-yeob/Workspace/TIL/capstone/data/Resource/other.csv').drop(['소분류', '내용'], axis=1).sort_values(by='지역')
 
-  ## sample_list에 csv 파일들 합치기
-  sample_list = pd.DataFrame(columns=["제목", "지역", "성별", "종류"])
-  sample_list = pd.concat([siseol, jaega, jeonmun, jiyeok, gita], keys=['시설', '재가', '전문', '지역', '기타'])
+  # ## sample_list에 csv 파일들 합치기
+  # sample_list = pd.DataFrame(columns=["제목", "지역", "성별", "종류"])
+  # sample_list = pd.concat([siseol, jaega, jeonmun, jiyeok, gita], keys=['시설', '재가', '전문', '지역', '기타'])
+  # sample_list.to_pickle("sample_list.pkl")
+
+  sample_list = pd.read_pickle("/Users/jo-eun-yeob/Workspace/TIL/capstone/data/sample_list.pkl")
 
   # 배열로 지역과 성별 문자열 저장
   sido_list = ['서울', '부산', '대구', '인천', '광주', '대전', '울산',
@@ -138,4 +147,6 @@ def recommend_volunteer(input_local, input_gender):
       # print("없는 지역입니다")
 
   msg = '&'.join(list(prob_vol.iloc[0].values[2:12]))
-  return msg
+  msg_split = msg.split('&')
+  return msg_split
+

@@ -15,7 +15,7 @@ router.register(r'professional', views.ProfessionalViewSet)
 router.register(r'jaega', views.JaeGaViewSet)
 router.register(r'account', views.UserViewSet)
 router.register(r'search', views.SearchViewSet, base_name='Search')
-# router.register(r'recommend', views.RecommendViewSet, base_name='Recommend')
+router.register(r'recommend', views.RecommendViewSet, base_name='Recommend')
 
 
 # router.register(r'search', views.SearchViewSet)

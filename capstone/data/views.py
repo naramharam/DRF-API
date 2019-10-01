@@ -98,26 +98,43 @@ class SearchViewSet(viewsets.ModelViewSet):
             return queryset
 
 
-# class RecommendViewSet(viewsets.ModelViewSet):
-#
-#     serializer_class = AllSerializer
-#
-#     def get_queryset(self):
-#         queryset = All.objects.all()
-#         location = self.request.query_params.get('location', None)
-#         gender = self.request.query_params.get('gender', None)
-#
-#         qs1 = KeyWordSearch.keyword_search(location)
-#         qs2 = KeyWordSearch.keyword_search(gender)
-#
-#         if qs1 or qs2 or title is not None:
-#             queryset1 = queryset.filter(title__contains=qs1)
-#             queryset2 = queryset.filter(title__contains=qs2)
-#             queryset3 = queryset.filter(title__contains=title)
-#
-#             queryset = queryset1 | queryset2 | queryset3
-#
-#             return queryset
+class RecommendViewSet(viewsets.ModelViewSet):
+
+    serializer_class = AllSerializer
+
+    def get_queryset(self):
+        queryset = All.objects.all()
+
+        gender = self.request.query_params.get('gender', None)
+        location = self.request.query_params.get('location', None)
+
+        qs1 = Recommend.recommend_volunteer(location, gender)[0]
+        qs2 = Recommend.recommend_volunteer(location, gender)[1]
+        qs3 = Recommend.recommend_volunteer(location, gender)[2]
+        qs4 = Recommend.recommend_volunteer(location, gender)[3]
+        qs5 = Recommend.recommend_volunteer(location, gender)[4]
+        qs6 = Recommend.recommend_volunteer(location, gender)[5]
+        qs7 = Recommend.recommend_volunteer(location, gender)[6]
+        qs8 = Recommend.recommend_volunteer(location, gender)[7]
+        qs9 = Recommend.recommend_volunteer(location, gender)[8]
+        qs10 = Recommend.recommend_volunteer(location, gender)[9]
+
+
+        if qs1 or qs2 or qs3 or qs4 or qs5 or qs6 or qs7 or qs8 or qs9 or qs10 is not None:
+            queryset1 = queryset.filter(title=qs1)
+            queryset2 = queryset.filter(title=qs2)
+            queryset3 = queryset.filter(title=qs3)
+            queryset4 = queryset.filter(title=qs4)
+            queryset5 = queryset.filter(title=qs5)
+            queryset6 = queryset.filter(title=qs6)
+            queryset7 = queryset.filter(title=qs7)
+            queryset8 = queryset.filter(title=qs8)
+            queryset9 = queryset.filter(title=qs9)
+            queryset10 = queryset.filter(title=qs10)
+
+            queryset = queryset1 | queryset2 | queryset3 | queryset4 | queryset5 | queryset6 | queryset7 | queryset8 | queryset9 | queryset10
+
+            return queryset
 
 
 class UserViewSet(viewsets.ModelViewSet):

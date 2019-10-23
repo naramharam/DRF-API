@@ -1,16 +1,18 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from data.models import Facility, Other, Community, Professional, Jaega, All, UserModel
+from rest_framework.permissions import IsAuthenticated
 from data.serializers import FacilitySerializer, OtherSerializer, CommunitySerializer,\
     ProfessionalSerializer, JaeGaSerializer, AllSerializer, UserSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.reverse import reverse
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from . import Recommend
 from . import KeyWordSearch
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def api_root(request, format=None):
     print(request)
     if request.method == 'GET':
@@ -108,29 +110,20 @@ class RecommendViewSet(viewsets.ModelViewSet):
         gender = self.request.query_params.get('gender', None)
         location = self.request.query_params.get('location', None)
 
-        qs1 = Recommend.recommend_volunteer(location, gender)[0]
-        qs2 = Recommend.recommend_volunteer(location, gender)[1]
-        qs3 = Recommend.recommend_volunteer(location, gender)[2]
-        qs4 = Recommend.recommend_volunteer(location, gender)[3]
-        qs5 = Recommend.recommend_volunteer(location, gender)[4]
-        qs6 = Recommend.recommend_volunteer(location, gender)[5]
-        qs7 = Recommend.recommend_volunteer(location, gender)[6]
-        qs8 = Recommend.recommend_volunteer(location, gender)[7]
-        qs9 = Recommend.recommend_volunteer(location, gender)[8]
-        qs10 = Recommend.recommend_volunteer(location, gender)[9]
+        qs = Recommend.recommend_volunteer(location, gender)
 
 
-        if qs1 or qs2 or qs3 or qs4 or qs5 or qs6 or qs7 or qs8 or qs9 or qs10 is not None:
-            queryset1 = queryset.filter(title=qs1)
-            queryset2 = queryset.filter(title=qs2)
-            queryset3 = queryset.filter(title=qs3)
-            queryset4 = queryset.filter(title=qs4)
-            queryset5 = queryset.filter(title=qs5)
-            queryset6 = queryset.filter(title=qs6)
-            queryset7 = queryset.filter(title=qs7)
-            queryset8 = queryset.filter(title=qs8)
-            queryset9 = queryset.filter(title=qs9)
-            queryset10 = queryset.filter(title=qs10)
+        if qs is not None:
+            queryset1 = queryset.filter(title=qs[0], location=location)
+            queryset2 = queryset.filter(title=qs[1], location=location)
+            queryset3 = queryset.filter(title=qs[2], location=location)
+            queryset4 = queryset.filter(title=qs[3], location=location)
+            queryset5 = queryset.filter(title=qs[4], location=location)
+            queryset6 = queryset.filter(title=qs[5], location=location)
+            queryset7 = queryset.filter(title=qs[6], location=location)
+            queryset8 = queryset.filter(title=qs[7], location=location)
+            queryset9 = queryset.filter(title=qs[8], location=location)
+            queryset10 = queryset.filter(title=qs[9], location=location)
 
             queryset = queryset1 | queryset2 | queryset3 | queryset4 | queryset5 | queryset6 | queryset7 | queryset8 | queryset9 | queryset10
 
@@ -143,6 +136,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['user_id']
+
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    #                       IsOwnerOrReadOnly]
 
     def create(self, request, *args, **kwargs):
         print(request.data)
